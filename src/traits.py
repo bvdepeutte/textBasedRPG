@@ -186,6 +186,13 @@ class Traits:
                 available.append(trait)
         return available
     
+    def getEnabledTraits(self):
+        selected = []
+        for trait in self.traits:
+            if self.traits[trait]["enable"]:
+                selected.append(trait)
+        return selected
+    
     def traitSelection(self,trait):
         exclusive = None
 

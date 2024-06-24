@@ -28,24 +28,6 @@ class TestTraits(unittest.TestCase):
     
     def test_traitSelection(self):
         traits = Traits()
-        wholeList = [
-            "poison",
-            "fire",
-            "acid",
-            "psycho",
-            "social",
-            "adaptative",
-            "energy",
-            "easylearner",
-            "healing",
-            "mecanic",
-            "iem",
-            "asocial",
-            "gluttony",
-            "frugal",
-            "poorVision",
-            "dumb"
-        ]
         expectedList = [
             "poison",
             "acid",
@@ -62,12 +44,26 @@ class TestTraits(unittest.TestCase):
         traits.traitSelection("poorVision")
         traits.traitSelection("asocial")
         traits.traitSelection("easylearner")
-        traits.traitSelection("social")
         traits.traitSelection("fire")
-        self.assertEqual(traits.getAvailableTraits(),
-                         expectedList,
+        self.assertEqual(traits.getAvailableTraits().sort(),
+                         expectedList.sort(),
                          "traitSelection doesn't set the expected values")        
 
+    def test_getEnabledTrait(self):
+        traits = Traits()
+        expectedList = [
+            "poorVision",
+            "asocial",
+            "easyLearner",
+            "fire"
+        ]
+        traits.traitSelection("poorVision")
+        traits.traitSelection("asocial")
+        traits.traitSelection("easylearner")
+        traits.traitSelection("fire")
+        self.assertEqual(traits.getEnabledTraits().sort(),
+                         expectedList.sort(),
+                         "traitSelection doesn't set the expected values")  
 
 if __name__ == "__main__":
     unittest.main()

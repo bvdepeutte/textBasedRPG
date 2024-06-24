@@ -8,14 +8,14 @@ class characterCreation:
     def selectLiveForm(self):
         print('''Select your character origin:
               - Human
-              - Cyborg
-              - Robot''')
+              - Cyborg''')
         temp = input()
-        while temp.lower not in ["human","cyborg","robot"]:
-            print("Please input a correct value: Human, Cyborg, Robot")
+        while temp.lower() not in ["human","cyborg"]:
+            print("Please input a correct value: Human, Cyborg")
             temp = input()
-        if temp.lower == "human":
-            self.character = Human
-
-        elif temp.lower == "cyborg":
-            self.character = Cyborg
+        if temp.lower() == "human":
+            self.character = Human("Default Name")
+        elif temp.lower() == "cyborg":
+            self.character = Cyborg("Default Name")
+        print(f"You have selected a {self.character._character} character")
+        return self.character

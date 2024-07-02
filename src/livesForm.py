@@ -11,7 +11,7 @@ class Character:
         # default energy can be impacted by many other elements
         self.energy = 0
         # initialize the base caracteristics
-        self.caracteristics = Caracteristics
+        self.caracteristics = Caracteristics()
         # define if the player can select this class during the character creation
         self._playable = True
         # initialize the traits
@@ -22,6 +22,8 @@ class Character:
         self.alive = True
         # will be used to store the character type (Human, Cyborg,ET,Robot,Animals)
         self._character = character
+        #will be used to store the class
+        self._Class = None
     
 #    def move(self,direction):
 #        if self.stamina > 5:

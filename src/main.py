@@ -1,8 +1,9 @@
 from userCreation import characterCreation
 
 def main():
-    creator = characterCreation()
-    playercharacter = creator.selectLiveForm()
+    playercharacter = characterCreation()
+    playercharacter.selectLiveForm()
+    playercharacter.selectClass()
 
 
 if __name__ == "__main__":

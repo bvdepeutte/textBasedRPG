@@ -172,10 +172,34 @@ class Traits:
             "dumb":{
                 "name":"Dumb",
                 "description": "The character can only learn one carreer path",
-                "value":10,
+                "value":-10,
                 "enable":False,
                 "available":True,
                 "exclusive":"gluttony"
+                },
+            "amputee":{
+                "name": "Amputee",
+                "description": "You've lost an arm during the war, you can only use one hand weapon",
+                "value": -10,
+                "enable": False,
+                "available": False,
+                "exclusive": None
+                },
+            "greed":{
+                "name": "Greed",
+                "description": "Money is everything, it's your goal, it's your life",
+                "value": -5,
+                "enable": False,
+                "available": True,
+                "exclusive": None
+                },
+            "rebel":{
+                "name": "Rebel",
+                "description": "You've never loved the hierarchy. You don't trust them, you won't listen",
+                "value": -5,
+                "enable": False,
+                "available": True,
+                "exclusive": None
                 }
         }
     

@@ -12,7 +12,7 @@ class TestTraits(unittest.TestCase):
             "social",
             "adaptative",
             "energy",
-            "easylearner",
+            "easyLearner",
             "healing",
             "mecanic",
             "iem",
@@ -20,10 +20,12 @@ class TestTraits(unittest.TestCase):
             "gluttony",
             "frugal",
             "poorVision",
-            "dumb"
+            "dumb",
+            "greed",
+            "rebel"
         ]
-        self.assertEqual(traits.getAvailableTraits(),
-                         expectedList,
+        self.assertEqual(sorted(traits.getAvailableTraits()),
+                         sorted(expectedList),
                          "getAvailableTraits doesn't the expected values")
     
     def test_traitSelection(self):
@@ -59,11 +61,19 @@ class TestTraits(unittest.TestCase):
         ]
         traits.traitSelection("poorVision")
         traits.traitSelection("asocial")
-        traits.traitSelection("easylearner")
+        traits.traitSelection("easyLearner")
         traits.traitSelection("fire")
         self.assertEqual(sorted(traits.getEnabledTraits()),
                          sorted(expectedList),
                          "traitSelection doesn't set the expected values")  
 
+    def testGetAvailablePoints(self):
+        traits = Traits()
+        traits.traitSelection("asocial")
+        traits.traitSelection("easyLearner")
+        traits.traitSelection("fire")        
+        points = traits.getAvailablePoints()
+        self.assertNotEqual(points,0)
+        self.assertNotEqual(traits.getEnabledTraits(),[])
 if __name__ == "__main__":
     unittest.main()

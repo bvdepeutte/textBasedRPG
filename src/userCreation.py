@@ -69,8 +69,7 @@ class characterCreation:
             self.slowPrint("Anxiety, fear, sadness, you can't take it anymore")
             self.slowPrint("They better help me or I don't answer to myself anymore...")
         self.classImpact(self.classSelection)
-        # for test purporse
-        self.classImpact(self.classSelection)
+        self.traitSelection(self)
 
     def classImpact(self,selection):
         if selection.lower() == "soldier":
@@ -129,3 +128,8 @@ class characterCreation:
             self.character._Class = "Farmer"
             self.character.traits.traitSelection("asocial")
             # total value = 40
+    def traitSelection(self):
+        print("After some rest, you need a moment to come up with a plan based on your strengths and weaknesses")
+        point = self.character.traits.getAvailablePoints()
+        print("Select some traits")
+        self.character.traits.getAvailableTraits()

@@ -77,7 +77,7 @@ class Traits:
                 "available":True,
                 "exclusive":None              
                 },
-            "easylearner":{
+            "easyLearner":{
                 "name":"Easy Learner",
                 "description": "During the game, the caracter won't receive a malus for starting a new carreer path",
                 "value":10,
@@ -216,6 +216,13 @@ class Traits:
             if self.traits[trait]["enable"]:
                 selected.append(trait)
         return selected
+
+    def getAvailablePoints(self):
+        points = 0
+        enabledTraits = self.getEnabledTraits()
+        for trait in enabledTraits:
+            points += self.traits[trait]["value"]
+        return points
     
     def traitSelection(self,trait):
         exclusive = None

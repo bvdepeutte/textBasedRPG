@@ -61,8 +61,8 @@ class TestTraits(unittest.TestCase):
         traits.traitSelection("asocial")
         traits.traitSelection("easylearner")
         traits.traitSelection("fire")
-        self.assertEqual(traits.getEnabledTraits().sort(),
-                         expectedList.sort(),
+        self.assertEqual(sorted(traits.getEnabledTraits()),
+                         sorted(expectedList),
                          "traitSelection doesn't set the expected values")  
 
 if __name__ == "__main__":

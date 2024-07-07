@@ -69,7 +69,6 @@ class characterCreation:
             self.slowPrint("Anxiety, fear, sadness, you can't take it anymore")
             self.slowPrint("They better help me or I don't answer to myself anymore...")
         self.classImpact(self.classSelection)
-        self.traitSelection(self)
 
     def classImpact(self,selection):
         if selection.lower() == "soldier":
@@ -128,8 +127,52 @@ class characterCreation:
             self.character._Class = "Farmer"
             self.character.traits.traitSelection("asocial")
             # total value = 40
-    def traitSelection(self):
-        print("After some rest, you need a moment to come up with a plan based on your strengths and weaknesses")
-        point = self.character.traits.getAvailablePoints()
-        print("Select some traits")
-        self.character.traits.getAvailableTraits()
+
+    def selectTraits(self):
+        points = self.character.traits.getAvailablePoints()
+        print("-----------------------------------------------------------")
+        print(f"Select some traits, you have {points}/20 points available:")
+        print("-----------------------------------------------------------")
+        availableTraits = self.character.traits.getAvailableTraits()
+        print("name - description - value")
+        for trait in availableTraits:
+            name = self.character.traits.traits[trait]["name"]
+            description = self.character.traits.traits[trait]["description"]
+            value = self.character.traits.traits[trait]["value"]
+            maxName = self.character.traits.getMaxLengthName()
+            # to align grid - Name
+            diffName = maxName - len(name)
+            if len(name) < maxName:
+                name = name + (' ' * diffName)
+            # to align grid - Description
+            maxDesc = self.character.traits.getMaxLengthDescription()
+            diffDesc = maxDesc - len(description)
+            if len(description) < maxDesc:
+                description = description + (' ' * diffDesc)
+
+            print(f"|{name} | {description} | {value}|")
+        print("-----------------------------------------------------------")
+        print("End: type 'leave'")
+        print("List available traits: type 'traits'")
+        print("List selected traits: type 'selected'")
+        print("Unselect traits: type 'unselect 'traits''")
+        choice = input().lower()
+        while choice not in availableTraits:
+            if choice == "leave":
+                if points <= 20:
+                    return
+                else:
+                    print("You have too many points, you can only have max 20 points available")
+            elif choice == 'selected':
+                selectedTraits = self.character.traits.getEnabledTraits()
+                for trait in selectedTraits:
+                    selectedName = self.character.traits.traits[trait]["name"]
+                    print(f"-{selectedName}")
+            elif choice == "traits":
+                self.selectTraits()
+            else:
+                print("The traits encoded doesn't exist. Please input a valid traits")
+                self.selectTraits()
+            choice = input().lower()
+            self.character.traits.traitSelection(choice)
+            self.selectTraits()

@@ -2,7 +2,7 @@ class Traits:
     def __init__(self):
         self.traits = {
             "poison":{
-                "name":"Poison resistance",
+                "name":"Poison",
                 "description": "The character takes less damage from poison",
                 "effect":{
                     "damageRatio": 0.75,
@@ -14,7 +14,7 @@ class Traits:
                 "exclusive":None  
                 },
             "fire":{
-                "name":"Fire resistance",
+                "name":"Fire",
                 "description": "The character takes less damage from fire",
                 "effect":{
                     "damageRatio": 0.75,
@@ -26,7 +26,7 @@ class Traits:
                 "exclusive":None  
                 },
             "acid":{
-                "name":"Acid resistance",
+                "name":"Acid",
                 "description": "The character takes less damage from acid",
                 "effect":{
                     "damageRatio": 0.75,
@@ -37,8 +37,8 @@ class Traits:
                 "available":True,
                 "exclusive":None  
                 },
-            "psycho":{
-                "name":"Psychological resistance",
+            "psychological":{
+                "name":"Psychological",
                 "description": "The character is immuned to psychological effect",
                 "effect":{
                     "damageRatio": 1,
@@ -50,7 +50,7 @@ class Traits:
                 "exclusive":None  
                 },
             "social":{
-                "name":"Social skills",
+                "name":"Social",
                 "description": "The character lives in community. His skills (outside combat) will be better used in a group than in solo.",
                 "value":10,
                 "effect":{
@@ -59,7 +59,7 @@ class Traits:
                 },
                 "enable":False,
                 "available":True,
-                "exclusive":"egoist"
+                "exclusive":"asocial"
                 },
             "adaptative":{
                 "name":"Adaptative",
@@ -70,7 +70,7 @@ class Traits:
                 "exclusive":None
                 },
             "energy":{
-                "name":"Based on energy",
+                "name":"Energy",
                 "description": "The character needs energy to perform some actions",
                 "value":5,
                 "enable":False,
@@ -86,7 +86,7 @@ class Traits:
                 "exclusive":None                
                 },
             "healing":{
-                "name":"First Aid",
+                "name":"Healing",
                 "description": "The caracter can administrate first aid in order to recover some HP.",
                 "value":10,
                 "effect":{
@@ -98,7 +98,7 @@ class Traits:
                 "exclusive":None
                 },
             "mecanic":{
-                "name":"Basic Mecanic",
+                "name":"Mecanic",
                 "description": "The caracter can perform basic reparation during the game.",
                 "value":10,
                 "effect":{
@@ -110,7 +110,7 @@ class Traits:
                 "exclusive":None                
                 },
             "iem":{
-                "name":"Electromagnetic",
+                "name":"IEM",
                 "description": "The caracter is subject to electromagnetic attack.",
                 "value":-5,
                 "effect":{
@@ -135,7 +135,7 @@ class Traits:
                 },
             "gluttony":{
                 "name":"Gluttony",
-                "description": "The character to will gain less energy and/or stamina from items.",
+                "description": "The character will gain less energy and/or stamina from items.",
                 "value":-10,
                 "effect":{
                     "itemsEffect":0.75,
@@ -146,8 +146,8 @@ class Traits:
                 "exclusive":"frugal"
                 },
             "frugal":{
-                "name":"Gluttony",
-                "description": "The character to will gain more energy and/or stamina from items.",
+                "name":"Frugal",
+                "description": "The character will gain more energy and/or stamina from items.",
                 "value":10,
                 "effect":{
                     "itemsEffect":1.25,
@@ -158,7 +158,7 @@ class Traits:
                 "exclusive":"gluttony"
                 },
             "poorVision":{
-                "name":"Poor Vision",
+                "name":"Poor Vision (poorVision)",
                 "description": "The character has poor vision. Giving him a malus when using range weapon.",
                 "value":-10,
                 "effect":{
@@ -203,6 +203,22 @@ class Traits:
                 }
         }
     
+    def getMaxLengthName(self):
+        traits = self.traits
+        max = float("-inf")
+        for trait in traits:
+            if max < len(traits[trait]["name"]):
+                max = len(traits[trait]["name"])
+        return max
+
+    def getMaxLengthDescription(self):
+        traits = self.traits
+        max = float("-inf")
+        for trait in traits:
+            if max < len(traits[trait]["description"]):
+                max = len(traits[trait]["description"])
+        return max
+
     def getAvailableTraits(self):
         available = []
         for trait in self.traits:

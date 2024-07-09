@@ -242,15 +242,11 @@ class Traits:
     
     def traitSelection(self,trait):
         exclusive = None
-
         # check if the input matches an available traits
         if  trait in self.traits:
             # check if the traits is available to selection        
             if self.traits[trait]["available"] == False:
-                return "Trait Not Available"
-            # check if the traits has already been selected
-            elif self.traits[trait]["enable"] == True:
-                return "Trait already selected"
+                return print("Trait not available or already selected")
             else:
                 self.traits[trait]["enable"] = True
                 self.traits[trait]["available"] = False
@@ -259,4 +255,21 @@ class Traits:
                     exclusive = self.traits[trait]["exclusive"]
                     self.traits[exclusive]["available"] = False
         else:
-            return "Please enter a valid trait"
+            return print("Please enter a valid trait")
+    
+    def traitUnselection(self,trait):
+        exclusive = None
+        # check if the input matches an available traits
+        if  trait in self.traits:
+            # check if the traits is available to selection        
+            if self.traits[trait]["available"] == True:
+                return print("Trait already unabled for the character")
+            else:
+                self.traits[trait]["enable"] = False
+                self.traits[trait]["available"] = True
+                # check if the selected traits is an exclusive traits 
+                if self.traits[trait]["exclusive"] is not None:
+                    exclusive = self.traits[trait]["exclusive"]
+                    self.traits[exclusive]["available"] = True
+        else:
+            return print("Please enter a valid trait")        

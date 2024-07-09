@@ -6,9 +6,9 @@ class characterCreation:
     def __init__(self):
         self.character = None
         self.classSelection = None
-        self.pause = 0.8
+        self.pause = 0.08
 
-    def slowPrint(self, text, delay=0.01):
+    def slowPrint(self, text, delay=0.001):
         for char in text:
             print(char, end='', flush=True)
             time.sleep(delay)
@@ -63,7 +63,7 @@ class characterCreation:
 
         if self.classSelection.lower() == "farmer":
             self.slowPrint("What has happened? A gold digging colony, the new american dream, what a bullshit")
-            self.slowPrint("You've worked hard for the last 5 years...")
+            self.slowPrint("You've worked hard over the last 5 years...")
             time.sleep(self.pause)
             self.slowPrint("for what? for nothing...")            
             self.slowPrint("Anxiety, fear, sadness, you can't take it anymore")
@@ -134,6 +134,7 @@ class characterCreation:
         print(f"Select some traits, you have {points}/20 points available:")
         print("-----------------------------------------------------------")
         availableTraits = self.character.traits.getAvailableTraits()
+        choice = ""
         print("name - description - value")
         for trait in availableTraits:
             name = self.character.traits.traits[trait]["name"]
@@ -157,22 +158,56 @@ class characterCreation:
         print("List selected traits: type 'selected'")
         print("Unselect traits: type 'unselect 'traits''")
         choice = input().lower()
-        while choice not in availableTraits:
-            if choice == "leave":
-                if points <= 20:
-                    return
-                else:
-                    print("You have too many points, you can only have max 20 points available")
+        while choice != "leave":
+            if choice in availableTraits:
+                self.character.traits.traitSelection(choice)
+                points = self.character.traits.getAvailablePoints()
+                print(f"You have spent {points}/20 points:")
+
             elif choice == 'selected':
                 selectedTraits = self.character.traits.getEnabledTraits()
                 for trait in selectedTraits:
                     selectedName = self.character.traits.traits[trait]["name"]
                     print(f"-{selectedName}")
+
             elif choice == "traits":
-                self.selectTraits()
+                    print("name - description - value")
+                    availableTraits = self.character.traits.getAvailableTraits()
+                    for trait in availableTraits:
+                        name = self.character.traits.traits[trait]["name"]
+                        description = self.character.traits.traits[trait]["description"]
+                        value = self.character.traits.traits[trait]["value"]
+                        maxName = self.character.traits.getMaxLengthName()
+                        # to align grid - Name
+                        diffName = maxName - len(name)
+                        if len(name) < maxName:
+                            name = name + (' ' * diffName)
+                        # to align grid - Description
+                        maxDesc = self.character.traits.getMaxLengthDescription()
+                        diffDesc = maxDesc - len(description)
+                        if len(description) < maxDesc:
+                            description = description + (' ' * diffDesc)
+
+                        print(f"|{name} | {description} | {value}|")
+                    print("-----------------------------------------------------------")
+                    print("End: type 'leave'")
+                    print("List available traits: type 'traits'")
+                    print("List selected traits: type 'selected'")
+                    print("Unselect traits: type 'unselect 'traits''")
             else:
-                print("The traits encoded doesn't exist. Please input a valid traits")
-                self.selectTraits()
+                words = choice.split(" ")
+                if words[0] == "unselect":
+                    self.character.traits.traitUnselection(words[1])
+                    # > TODO CAN BE REMOVED for amputee and basics traits for each class.
+                    points = self.character.traits.getAvailablePoints()
+                    print(f"You have spent {points}/20 points:")
+                else:    
+                    print("The traits encoded doesn't exist. Please input a valid traits")
+
             choice = input().lower()
-            self.character.traits.traitSelection(choice)
+
+        if points > 20:
+            print("You have too many points, you can only have max 20 points available")
             self.selectTraits()
+        else:
+            return

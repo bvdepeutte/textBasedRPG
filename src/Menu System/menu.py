@@ -1,4 +1,5 @@
 import pygame
+from button import Button
 
 class Menu():
     def __init__(self, game):
@@ -8,8 +9,10 @@ class Menu():
         self.cursor_rect = pygame.Rect(0, 0, 20, 20)
         self.offset = - 100
         self.BG = pygame.image.load("src/assets/mainMenuBG.jpg")
-        self.itemSizeH1 = 40
-        self.itemSizeH2 = 25
+        self.itemSizeH1 = 70
+        self.itemSizeH2 = 50
+        self.size = 12
+        self.font = pygame.font.Font(pygame.font.get_default_font(),self.size)
 
     def draw_cursor(self):
         self.game.draw_text('*', 15, self.cursor_rect.x, self.cursor_rect.y)
@@ -25,8 +28,8 @@ class MainMenu(Menu):
         Menu.__init__(self, game)
         self.state = "Start"
         self.startx, self.starty = self.mid_w, self.mid_h - 40
-        self.optionsx, self.optionsy = self.mid_w, self.mid_h + 0
-        self.creditsx, self.creditsy = self.mid_w, self.mid_h + 40
+        self.optionsx, self.optionsy = self.mid_w, self.mid_h + 25
+        self.creditsx, self.creditsy = self.mid_w, self.mid_h + 90
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
         self.BG = pygame.image.load("src/assets/mainMenuBG.jpg")
         pygame.display.set_caption("Main Menu")
@@ -41,9 +44,12 @@ class MainMenu(Menu):
             self.game.display.blit(self.BG,(0,0))
             
             self.game.draw_text('Main Menu', self.itemSizeH1,self.mid_w, self.mid_h/2, self.game.WHITE,self.game.RED)
-            self.game.draw_text("Start Game", self.itemSizeH2, self.startx, self.starty, self.game.WHITE,self.game.RED)
-            self.game.draw_text("Options", self.itemSizeH2, self.optionsx, self.optionsy, self.game.WHITE,self.game.RED)
-            self.game.draw_text("Credits", self.itemSizeH2, self.creditsx, self.creditsy, self.game.WHITE,self.game.RED)
+            PLAY_BUTTON = Button(self.game,(self.startx,self.starty),"New Game",self.itemSizeH2,self.font,self.game.WHITE,self.game.RED,self.game.BLACK)
+#            self.game.draw_text("Start Game", self.itemSizeH2, self.startx, self.starty, self.game.WHITE,self.game.RED)
+            OPTION_BUTTON = Button(self.game,(self.optionsx,self.optionsy),"Settings",self.itemSizeH2,self.font,self.game.WHITE,self.game.RED,self.game.BLACK)
+            CREDIT_BUTTON = Button(self.game,(self.creditsx,self.creditsy),"Credit",self.itemSizeH2,self.font,self.game.WHITE,self.game.RED,self.game.BLACK)
+            #self.game.draw_text("Options", self.itemSizeH2, self.optionsx, self.optionsy, self.game.WHITE,self.game.RED)
+            #self.game.draw_text("Credits", self.itemSizeH2, self.creditsx, self.creditsy, self.game.WHITE,self.game.RED)
             self.draw_cursor()
             self.blit_screen()
 

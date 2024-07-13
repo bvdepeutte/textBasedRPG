@@ -1,4 +1,4 @@
-import pygame
+import pygame,sys
 from button import Button
 
 class Menu():
@@ -14,9 +14,6 @@ class Menu():
         self.size = 12
         self.font = pygame.font.Font(pygame.font.get_default_font(),self.size)
 
-    def draw_cursor(self):
-        self.game.draw_text('*', 15, self.cursor_rect.x, self.cursor_rect.y)
-
     def blit_screen(self):
         self.game.window.blit(self.BG, (0, 0))
         self.game.window.blit(self.game.display, (0, 0))
@@ -30,6 +27,7 @@ class MainMenu(Menu):
         self.startx, self.starty = self.mid_w, self.mid_h - 40
         self.optionsx, self.optionsy = self.mid_w, self.mid_h + 25
         self.creditsx, self.creditsy = self.mid_w, self.mid_h + 90
+        self.quitx, self.quity = self.mid_w, self.mid_h + 155
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
         self.BG = pygame.image.load("src/assets/mainMenuBG.jpg")
         pygame.display.set_caption("Main Menu")
@@ -37,6 +35,10 @@ class MainMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
+
+            self.blit_screen()
+
+            MENU_MOUSE_POS = pygame.mouse.get_pos()
             self.game.check_events()
             self.check_input()
 
@@ -44,15 +46,33 @@ class MainMenu(Menu):
             self.game.display.blit(self.BG,(0,0))
             
             self.game.draw_text('Main Menu', self.itemSizeH1,self.mid_w, self.mid_h/2, self.game.WHITE,self.game.RED)
-            PLAY_BUTTON = Button(self.game,(self.startx,self.starty),"New Game",self.itemSizeH2,self.font,self.game.WHITE,self.game.RED,self.game.BLACK)
-#            self.game.draw_text("Start Game", self.itemSizeH2, self.startx, self.starty, self.game.WHITE,self.game.RED)
-            OPTION_BUTTON = Button(self.game,(self.optionsx,self.optionsy),"Settings",self.itemSizeH2,self.font,self.game.WHITE,self.game.RED,self.game.BLACK)
-            CREDIT_BUTTON = Button(self.game,(self.creditsx,self.creditsy),"Credit",self.itemSizeH2,self.font,self.game.WHITE,self.game.RED,self.game.BLACK)
-            #self.game.draw_text("Options", self.itemSizeH2, self.optionsx, self.optionsy, self.game.WHITE,self.game.RED)
-            #self.game.draw_text("Credits", self.itemSizeH2, self.creditsx, self.creditsy, self.game.WHITE,self.game.RED)
-            self.draw_cursor()
-            self.blit_screen()
+            PLAY_BUTTON = Button(self.game,(self.startx,self.starty),"New Game",self.itemSizeH2,self.game.WHITE,self.game.RED,self.game.BLACK)
+            PLAY_BUTTON.update()
+            OPTION_BUTTON = Button(self.game,(self.optionsx,self.optionsy),"Settings",self.itemSizeH2,self.game.WHITE,self.game.RED,self.game.BLACK)
+            OPTION_BUTTON.update()
+            CREDIT_BUTTON = Button(self.game,(self.creditsx,self.creditsy),"Credit",self.itemSizeH2,self.game.WHITE,self.game.RED,self.game.BLACK)
+            CREDIT_BUTTON.update()
+            QUIT_BUTTON = Button(self.game,(self.quitx,self.quity),"Quit",self.itemSizeH2,self.game.WHITE,self.game.RED,self.game.BLACK)
+            QUIT_BUTTON.update()
 
+            for button in [PLAY_BUTTON, OPTION_BUTTON, CREDIT_BUTTON, QUIT_BUTTON]:
+                button.changeColor(MENU_MOUSE_POS)
+                button.update()
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        pass
+                    if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        pass
+                    if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        pass
+                    if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        pygame.quit()
+                        sys.exit()
 
     def move_cursor(self):
         if self.game.DOWN_KEY:

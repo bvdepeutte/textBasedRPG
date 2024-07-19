@@ -8,11 +8,13 @@ class Menu():
         self.run_display = True
         self.cursor_rect = pygame.Rect(0, 0, 20, 20)
         self.offset = - 100
-        self.BG = pygame.image.load("src/assets/mainMenuBG.jpg")
+        self.BG = None
         self.itemSizeH1 = 70
         self.itemSizeH2 = 50
         self.size = 12
         self.font = pygame.font.Font(pygame.font.get_default_font(),self.size)
+        pygame.display.set_caption("Text RPG")
+
 
     def blit_screen(self):
         self.game.window.blit(self.BG, (0, 0))
@@ -23,24 +25,21 @@ class Menu():
 class MainMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.state = "Start"
+        self.state = "New Game"
         self.startx, self.starty = self.mid_w, self.mid_h - 40
         self.optionsx, self.optionsy = self.mid_w, self.mid_h + 25
         self.creditsx, self.creditsy = self.mid_w, self.mid_h + 90
         self.quitx, self.quity = self.mid_w, self.mid_h + 155
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
         self.BG = pygame.image.load("src/assets/mainMenuBG.jpg")
-        pygame.display.set_caption("Main Menu")
 
     def display_menu(self):
-        self.run_display = True
         while self.run_display:
 
             self.blit_screen()
 
             MENU_MOUSE_POS = pygame.mouse.get_pos()
             self.game.check_events()
-            self.check_input()
 
 
             self.game.display.blit(self.BG,(0,0))
@@ -58,93 +57,46 @@ class MainMenu(Menu):
             for button in [PLAY_BUTTON, OPTION_BUTTON, CREDIT_BUTTON, QUIT_BUTTON]:
                 button.changeColor(MENU_MOUSE_POS)
                 button.update()
-            
+                if button.checkForInput(MENU_MOUSE_POS) and button == PLAY_BUTTON:
+                    self.state = "New Game"
+                elif button.checkForInput(MENU_MOUSE_POS) and button == OPTION_BUTTON:
+                    self.state = "Option"
+                elif button.checkForInput(MENU_MOUSE_POS) and button == CREDIT_BUTTON:
+                    self.state = "Credit"
+                elif button.checkForInput(MENU_MOUSE_POS) and button == QUIT_BUTTON:
+                    self.state = "Quit" 
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                        pass
+                        self.game.start_game = True
                     if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
                         pass
-                    if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
-                        pass
+                    if CREDIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        self.game.curr_menu = self.game.credits
+                        self.game.curr_menu.display_menu()
                     if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                         pygame.quit()
                         sys.exit()
 
-    def move_cursor(self):
-        if self.game.DOWN_KEY:
-            if self.state == 'Start':
-                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
-                self.state = 'Options'
-            elif self.state == 'Options':
-                self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
-                self.state = 'Credits'
-            elif self.state == 'Credits':
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
-                self.state = 'Start'
-        elif self.game.UP_KEY:
-            if self.state == 'Start':
-                self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
-                self.state = 'Credits'
-            elif self.state == 'Options':
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
-                self.state = 'Start'
-            elif self.state == 'Credits':
-                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
-                self.state = 'Options'
-
-    def check_input(self):
-        self.move_cursor()
-        if self.game.START_KEY:
-            if self.state == 'Start':
-                self.game.playing = True
-            elif self.state == 'Options':
-                self.game.curr_menu = self.game.options
-            elif self.state == 'Credits':
-                self.game.curr_menu = self.game.credits
-            self.run_display = False
 
 class OptionsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.state = 'Volume'
-        self.volx, self.voly = self.mid_w, self.mid_h + 20
-        self.controlsx, self.controlsy = self.mid_w, self.mid_h + 40
-        self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
-
+        
     def display_menu(self):
-        self.run_display = True
-        while self.run_display:
-            self.game.check_events()
-            self.check_input()
-            self.game.display.fill((0, 0, 0))
-            self.game.draw_text('Options', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-            self.game.draw_text("Volume", 15, self.volx, self.voly)
-            self.game.draw_text("Controls", 15, self.controlsx, self.controlsy)
-            self.draw_cursor()
-            self.blit_screen()
+        pass
 
     def check_input(self):
-        if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.main_menu
-            self.run_display = False
-        elif self.game.UP_KEY or self.game.DOWN_KEY:
-            if self.state == 'Volume':
-                self.state = 'Controls'
-                self.cursor_rect.midtop = (self.controlsx + self.offset, self.controlsy)
-            elif self.state == 'Controls':
-                self.state = 'Volume'
-                self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
-        elif self.game.START_KEY:
-            # TO-DO: Create a Volume Menu and a Controls Menu
-            pass
+        pass
 
 class CreditsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
+        self.BG = pygame.image.load("src/assets/creditMenuBG.jpg")
 
     def display_menu(self):
         self.run_display = True
@@ -153,8 +105,8 @@ class CreditsMenu(Menu):
             if self.game.START_KEY or self.game.BACK_KEY:
                 self.game.curr_menu = self.game.main_menu
                 self.run_display = False
-            self.game.display.fill(self.game.BLACK)
+            self.game.display.blit(self.BG,(0,0))
             self.game.draw_text('Credits', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
-            self.game.draw_text('Made by me', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 10)
+            self.game.draw_text('Made by Bastien Vandepeutte for personnal project', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 10)
             self.blit_screen()
 

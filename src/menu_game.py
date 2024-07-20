@@ -4,7 +4,6 @@ from menu import *
 
 class MenuGame():
     def __init__(self,display,window,display_w,display_h):
-        pygame.init()
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
         self.display = display
@@ -18,11 +17,9 @@ class MenuGame():
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
         self.curr_menu = self.main_menu
-        self.start_game = False
 
     def game_loop(self):
-        while self.playing and self.start_game == False:
-            self.check_events()
+        while self.playing:
             if self.START_KEY:
                 self.playing= False
             self.display.fill(self.BLACK)
@@ -39,7 +36,7 @@ class MenuGame():
                 self.running, self.playing = False, False
                 self.curr_menu.run_display = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
+                if event.key == pygame.K_ESCAPE:
                     self.START_KEY = True
                 if event.key == pygame.K_BACKSPACE:
                     self.BACK_KEY = True

@@ -72,7 +72,8 @@ class MainMenu(Menu):
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                        self.game.start_game = True
+                        self.game.playing = True
+                        self.run_display = False
                     if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
                         pass
                     if CREDIT_BUTTON.checkForInput(MENU_MOUSE_POS):

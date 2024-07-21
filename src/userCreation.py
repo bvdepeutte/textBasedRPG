@@ -3,10 +3,11 @@ import time
 
 class characterCreation:
 
-    def __init__(self):
+    def __init__(self, game):
         self.character = None
         self.classSelection = None
         self.pause = 0.08
+        self.game = game
 
     def slowPrint(self, text, delay=0.001):
         for char in text:
@@ -15,18 +16,18 @@ class characterCreation:
         print()
 
     def selectLiveForm(self):
-        print('''Select your character origin:
+        self.game.draw_fix_text('''Select your character origin:
               - Human
-              - Cyborg''')
-        temp = input()
+              - Cyborg''', self.game.text_size, self.game.DISPLAY_W /6, self.game.DISPLAY_H * 1/8)
+        temp = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H * 1/8 + 100, 200, 50, '#select_live_form_first_choice')
         while temp.lower() not in ["human","cyborg"]:
             print("Please input a correct value: Human, Cyborg")
-            temp = input()
+            temp = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H * 1/8 + 100, 200, 50, '#select_live_form_second_choice')
         if temp.lower() == "human":
             self.character = Human("Default Name")
         elif temp.lower() == "cyborg":
             self.character = Cyborg("Default Name")
-        print(f"You have selected a {self.character._character} character")
+        self.game.draw_fix_text(f"You have selected a {self.character._character} character", self.game.text_size, self.game.DISPLAY_W /6, self.game.DISPLAY_H * 3/8)
         return self.character
     
     def selectClass(self):

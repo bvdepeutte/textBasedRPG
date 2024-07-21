@@ -18,7 +18,5 @@ while menu_game.running:
         if event.type == pygame.QUIT:
             menu_game.running = False
     menu_game.curr_menu.display_menu()
-    print("passed display")
-    print(menu_game.playing)
     if menu_game.playing:
         game.game_loop()

@@ -9,7 +9,7 @@ class Game():
         self.window = window
         self.DISPLAY_W = display_w
         self.DISPLAY_H = display_h
-        self.font_name = pygame.font.get_default_font()
+        self.font_path = 'src/assets/hood_brothers.ttf'
         self.BLACK, self.WHITE, self.RED = (0, 0, 0), (255, 255, 255), (122, 38, 58)
         self.text_size = 20
         self.title = 50
@@ -17,6 +17,7 @@ class Game():
         self.timer = pygame.time.Clock()
         self.playing = True
         self.SPACE_KEY, self.UP_KEY, self.DOWN_KEY = False, False, False
+        self.title_BG = pygame.image.load('src/assets/new_game_title_screen.jpg')
 
 
 
@@ -25,22 +26,22 @@ class Game():
         pygame.display.update()
 
     def game_loop(self):
-        print('enter the loop')
+        fontAvalaible = pygame.font.get_fonts()
+        print(fontAvalaible)
         while self.playing:
-            print(self.playing)
             self.display.fill(self.BLACK)
+            'new_game_title_screen.jpg'
             self.blit_screen()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    print("quit")
                     pygame.quit()
                     sys.exit()
-            self.window.blit(self.display,(0,0))
+            self.window.blit(self.title_BG,(0,0))
             pygame.display.update()
             self.timer.tick(30)
-            self.draw_fix_text("The Project:", self.title, self.DISPLAY_W/2, 70, self.WHITE, self.RED)
-            self.draw_fix_text("A text based RPG",self.subtitle, self.DISPLAY_W/2, 140, self.WHITE)
-            self.draw_text_game("A text based RPG",self.subtitle, 10, 200, self.WHITE)
+            self.draw_fix_text("The Project:", self.title, self.DISPLAY_W/2, self.DISPLAY_H/4, self.WHITE, self.RED)
+            self.draw_fix_text("A text based RPG",self.subtitle, self.DISPLAY_W/2, self.DISPLAY_H* 7/20, self.WHITE)
+            self.draw_fix_text("Created by: Vandepeutte Bastien",self.text_size, self.DISPLAY_W/2, self.DISPLAY_H/2, self.WHITE)
             self.draw_fix_text("Press space to continue",self.text_size,self.DISPLAY_W /2, self.DISPLAY_H - 60)
             self.wait_for_space_bar()
 
@@ -67,7 +68,7 @@ class Game():
         self.UP_KEY, self.DOWN_KEY, self.SPACE_KEY = False, False, False
 
     def draw_text_game(self, text, size, x, y,fontColor=None,backgroundColor=None):
-        font = pygame.font.Font(self.font_name,size)
+        font = pygame.font.Font(self.font_path,size)
         fontColor = fontColor or self.WHITE
         message = text
         snip = font.render("", True, fontColor)
@@ -92,8 +93,7 @@ class Game():
             pygame.display.flip()
             
     def draw_fix_text(self, text, size, x, y,fontColor=None,backgroundColor=None):
-        print("test")
-        font = pygame.font.Font(self.font_name,size)
+        font = pygame.font.Font(self.font_path,size)
         fontColor = fontColor or self.WHITE
         text_surface = font.render(text, True, fontColor)
         original_text_rect = text_surface.get_rect()
@@ -103,6 +103,7 @@ class Game():
             pygame.draw.rect(self.window, backgroundColor, extended_text_rect,0,7,7,7,7,7)
         text_surface_rect = text_surface.get_rect(center=extended_text_rect.center)
         self.window.blit(text_surface,text_surface_rect)
+        pygame.display.flip()
 
     def wait_for_space_bar(self):
         waiting = True

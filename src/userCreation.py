@@ -18,29 +18,23 @@ class characterCreation:
     def selectLiveForm(self):
         self.game.draw_fix_text('''Select your character origin:
               - Human
-              - Cyborg''', self.game.text_size, self.game.DISPLAY_W /6, self.game.DISPLAY_H * 1/8)
-        temp = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H * 1/8 + 100, 200, 50, '#select_live_form_first_choice')
-        while temp.lower() not in ["human","cyborg"]:
-            print("Please input a correct value: Human, Cyborg")
-            temp = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H * 1/8 + 100, 200, 50, '#select_live_form_second_choice')
-        if temp.lower() == "human":
+              - Cyborg''', self.game.text_size, self.game.DISPLAY_W /4, self.game.DISPLAY_H * 1/8)
+        character_selection_temp = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H * 1/8 + 60, 200, 50, '#select_live_form_first_choice',['human', 'cyborg'])
+        if character_selection_temp.lower() == "human":
             self.character = Human("Default Name")
-        elif temp.lower() == "cyborg":
+        elif character_selection_temp.lower() == "cyborg":
             self.character = Cyborg("Default Name")
-        self.game.draw_fix_text(f"You have selected a {self.character._character} character", self.game.text_size, self.game.DISPLAY_W /6, self.game.DISPLAY_H * 3/8)
+        self.game.draw_fix_text(f"You have selected a {self.character._character} character", self.game.text_size, self.game.DISPLAY_W /4, self.game.DISPLAY_H * 1/8 + 125)
         return self.character
     
     def selectClass(self):
-        print("During the past decades, you've dedicated your life to your job as a...")
-        print('''Select a class:
+        self.game.draw_text_game("During the past decades, you've dedicated your life to your job as a...",self.game.text_size, self.game.DISPLAY_W /4, self.game.DISPLAY_H * 1/8+160)
+        self.game.draw_text_game('''Select a class:
             - Soldier
             - Trader
             - Pilot
-            - Farmer''')
-        self.classSelection = input()
-        while self.classSelection.lower() not in ["soldier","trader","pilot","farmer"]:
-            print("Please input a correct value (Warrior, Trader, Pilot, Farmer)")
-            self.classSelection = input()
+            - Farmer''',self.game.text_size, self.game.DISPLAY_W /4, self.game.DISPLAY_H * 1/8+195)
+        self.classSelection = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H * 1/8 + 375, 200, 50, '#select_class',["soldier","trader","pilot","farmer"])
         if self.classSelection.lower() == "soldier":
             self.slowPrint("You have been fighting for the last 3 years against the Ennemy. You've shed tears, sweat and blood for the Motherland.")
             self.slowPrint("There was a battle, one of the greatest you have ever seen. You are trying to remember it... you don't know why yet but it hurts, way worse than your wounds... ")

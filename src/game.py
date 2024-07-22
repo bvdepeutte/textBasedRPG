@@ -28,8 +28,6 @@ class Game():
         pygame.display.update()
 
     def game_loop(self):
-        fontAvalaible = pygame.font.get_fonts()
-        print(fontAvalaible)
         while self.playing:
             self.display.fill(self.BLACK)
             self.blit_screen()
@@ -83,7 +81,7 @@ class Game():
 
             playercharacter = characterCreation(self)
             playercharacter.selectLiveForm()
-            #playercharacter.selectClass()
+            playercharacter.selectClass()
             #print("After some rest, you need a moment to come up with a plan based on your strengths and weaknesses")
             #playercharacter.selectTraits()
             self.draw_fix_text("Press space to continue",self.text_size,self.DISPLAY_W /2, self.DISPLAY_H - 60,None,self.BLACK)
@@ -117,6 +115,9 @@ class Game():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        speed = 3
 
             counter += 1
 
@@ -153,7 +154,7 @@ class Game():
                     waiting = False
             self.UI_REFRESH_RATE  # Frame rate control to prevent high CPU usage
     
-    def input_box(self, x, y, sizeX, sizeY, object_id):
+    def input_box(self, x, y, sizeX, sizeY, object_id, restrictedList):
 
         text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((x, y), (sizeX, sizeY)), manager=self.manager,
                                                object_id = object_id)
@@ -164,7 +165,7 @@ class Game():
                     pygame.quit()
                     sys.exit()
                 if (event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and
-                    event.ui_object_id == object_id):
+                    event.ui_object_id == object_id) and event.text.lower() in restrictedList:
                     return event.text
 
                 self.manager.process_events(event)

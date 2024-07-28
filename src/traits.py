@@ -77,8 +77,8 @@ class Traits:
                 "available":True,
                 "exclusive":None              
                 },
-            "easyLearner":{
-                "name":"Easy Learner",
+            "easylearner":{
+                "name":"Easy Learner (easyLearner)",
                 "description": "During the game, the caracter won't receive a malus for starting a new carreer path",
                 "value":10,
                 "enable":False,
@@ -157,7 +157,7 @@ class Traits:
                 "available":True,
                 "exclusive":"gluttony"
                 },
-            "poorVision":{
+            "poorvision":{
                 "name":"Poor Vision (poorVision)",
                 "description": "The character has poor vision. Giving him a malus when using range weapon.",
                 "value":-10,

@@ -136,33 +136,54 @@ class characterCreation:
             self.character.traits.traitSelection("asocial")
             # total value = 40
 
+    def blit_screen(self):
+        self.game.window.blit(self.game.title_BG, (0, 0))
+        self.game.window.blit(self.game.display, (0, 0))
+        pygame.display.update()
+
+    
     def select_traits(self):
         self.print_traits()
         pass_to_next = False
         traits = self.character.traits.get_all_traits()
         available_traits = self.character.traits.getAvailableTraits()
+
+        LEAVE_BUTTON = Button(self.game,(self.game.DISPLAY_W - 60, self.game.DISPLAY_H - 60),"Save", 45,self.game.WHITE,self.game.RED,self.game.BLACK)
+        LEAVE_BUTTON.update()
         while  pass_to_next == False:
+            MOUSE_POS = pygame.mouse.get_pos()
+            self.game.check_events()
+            print(MOUSE_POS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                        if LEAVE_BUTTON.checkForInput(MOUSE_POS):
+                            print("tu te rapproches")
+                            pass_to_next = True
             available_traits = self.character.traits.getAvailableTraits()
             enable_traits = self.character.traits.getEnabledTraits()
-            choice = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H - 100, 400, 50, '#select_trait',traits)
+            choice = self.game.input_box(self.game.DISPLAY_W/6, self.game.DISPLAY_H *1/10, 400, 50, '#select_trait',traits)
             if choice in available_traits:
                 self.character.traits.traitSelection(choice)
             elif choice in enable_traits:
                 self.character.traits.traitUnselection(choice)
+            traits_enabled = self.character.traits.getEnabledTraits()
+            for trait in traits_enabled:
+                print(trait)
+            self.game.display.fill(self.game.BLACK)
+            self.game.window.blit(self.game.title_BG,(0,0))
             self.print_traits()
             
     def print_traits(self):
         points = self.character.traits.getAvailablePoints()
-        self.game.draw_left_fix_text("Select some traits in the list below",self.game.text_size, self.game.DISPLAY_W/12, self.game.DISPLAY_H * 1/8) 
-        self.game.draw_left_fix_text(f"{points}",self.game.text_size, self.game.DISPLAY_W*8/12-50, self.game.DISPLAY_H * 1/8)
-        self.game.draw_left_fix_text("/20 points available",self.game.text_size, self.game.DISPLAY_W*8/12, self.game.DISPLAY_H * 1/8)
+        self.game.draw_left_fix_text("Select some traits in the list below",self.game.text_size, self.game.DISPLAY_W/12, self.game.DISPLAY_H * 1/10 - 40) 
+        self.game.draw_left_fix_text(f"{points}",self.game.text_size, self.game.DISPLAY_W*8/12-50, self.game.DISPLAY_H * 1/10- 40)
+        self.game.draw_left_fix_text("/20 points available",self.game.text_size, self.game.DISPLAY_W*8/12, self.game.DISPLAY_H * 1/10- 40)
         traits = self.character.traits.get_all_traits()
-        self.game.draw_left_fix_text("name",self.game.text_size, (self.game.DISPLAY_W)*1/12, self.game.DISPLAY_H * 2/8)
-        self.game.draw_left_fix_text("description",self.game.text_size, (self.game.DISPLAY_W)*4/12, self.game.DISPLAY_H * 2/8)
+        self.game.draw_left_fix_text("name",self.game.text_size, (self.game.DISPLAY_W)*1/12, self.game.DISPLAY_H * 2/10)
+        self.game.draw_left_fix_text("description",self.game.text_size, (self.game.DISPLAY_W)*4/12, self.game.DISPLAY_H * 2/10)
         i = 0
         
         for trait in traits:
@@ -172,8 +193,8 @@ class characterCreation:
                 selectedColor = self.game.BLACK
             else:
                 selectedColor = self.game.RED
-            self.game.draw_left_fix_text(name,24,self.game.DISPLAY_W*1/12,self.game.DISPLAY_H * 2/8 + 40 + i,self.game.WHITE,selectedColor)
-            self.game.draw_left_fix_text(description,24,self.game.DISPLAY_W*4/12,self.game.DISPLAY_H * 2/8 + 40 + i,self.game.WHITE,selectedColor)
+            self.game.draw_left_fix_text(name,24,self.game.DISPLAY_W*1/12,self.game.DISPLAY_H * 2/10 + 40 + i,self.game.WHITE,selectedColor)
+            self.game.draw_left_fix_text(description,24,self.game.DISPLAY_W*4/12,self.game.DISPLAY_H * 2/10 + 40 + i,self.game.WHITE,selectedColor)
             i += 35
             # maxName = self.character.traits.getMaxLengthName()
             # # to align grid - Name

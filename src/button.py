@@ -16,10 +16,11 @@ class Button():
         self.rect.center = (self.x_pos, self.y_pos)
         self.text_surface_rect = self.text.get_rect(center=self.rect.center)
 
-        pygame.draw.rect(self.screen.display,base_color,self.rect,0,7,7,7,7,7)
+        pygame.draw.rect(self.screen.window,base_color,self.rect,0,7,7,7,7,7)
     
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            print("true")
             return True
         return False
 
@@ -32,3 +33,4 @@ class Button():
     def update(self):
         pygame.draw.rect(self.screen.display, self.base_color, self.rect, 0, 7, 7, 7, 7, 7)
         self.screen.display.blit(self.text, self.text_surface_rect)
+        self.screen.window.blit(self.text, self.text_surface_rect)

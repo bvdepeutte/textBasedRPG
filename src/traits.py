@@ -218,6 +218,14 @@ class Traits:
             if max < len(traits[trait]["description"]):
                 max = len(traits[trait]["description"])
         return max
+    
+    def get_all_traits(self):
+        traits = []
+        for trait in self.traits:
+            if self.traits[trait]["exclusive"] == None:
+                traits.append(trait)
+        return traits
+
 
     def getAvailableTraits(self):
         available = []

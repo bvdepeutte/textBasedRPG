@@ -30,4 +30,5 @@ class Button():
             self.text = self.font.render(self.text_input, True, self.font_color)
     
     def update(self):
+        pygame.draw.rect(self.screen.display, self.base_color, self.rect, 0, 7, 7, 7, 7, 7)
         self.screen.display.blit(self.text, self.text_surface_rect)

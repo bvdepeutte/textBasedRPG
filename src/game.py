@@ -20,6 +20,9 @@ class Game():
         self.SPACE_KEY, self.UP_KEY, self.DOWN_KEY = False, False, False
         self.title_BG = pygame.image.load('src/assets/new_game_title_screen.jpg')
         self.manager = pygame_gui.UIManager((display_w, display_h))
+        self.font = pygame.font.Font(self.font_path,12)
+        self.MOUSE_POS = pygame.mouse.get_pos()
+
 
 
 
@@ -82,10 +85,13 @@ class Game():
             playercharacter = characterCreation(self)
             playercharacter.selectLiveForm()
             playercharacter.selectClass()
-            #print("After some rest, you need a moment to come up with a plan based on your strengths and weaknesses")
-            #playercharacter.selectTraits()
+            self.draw_left_fix_text("You need a moment to come up with a plan based on your strengths and weaknesses",self.text_size, self.DISPLAY_W/12, self.DISPLAY_H * 1/8+450)
             self.draw_fix_text("Press space to continue",self.text_size,self.DISPLAY_W /2, self.DISPLAY_H - 60,None,self.BLACK)
             self.wait_for_space_bar()
+            self.display.fill(self.BLACK)
+            self.window.blit(self.title_BG,(0,0))
+            playercharacter.select_traits()
+
 
     def check_events(self):
         for event in pygame.event.get():
@@ -129,7 +135,8 @@ class Game():
 
             self.window.blit(snip, (x, y))
             pygame.display.flip()
-            
+         
+    # center draw   
     def draw_fix_text(self, text, size, x, y,fontColor=None,backgroundColor=None):
         font = pygame.font.Font(self.font_path,size)
         fontColor = fontColor or self.WHITE
@@ -142,6 +149,22 @@ class Game():
         text_surface_rect = text_surface.get_rect(center=extended_text_rect.center)
         self.window.blit(text_surface,text_surface_rect)
         pygame.display.flip()
+
+    # left draw   
+    def draw_left_fix_text(self, text, size, x, y,fontColor=None,backgroundColor=None):
+        font = pygame.font.Font(self.font_path,size)
+        fontColor = fontColor or self.WHITE
+        text_surface = font.render(text, True, fontColor)
+        original_text_rect = text_surface.get_rect()
+        extended_text_rect = pygame.Rect(0, 0, original_text_rect.width + 10, original_text_rect.height + 6)
+        extended_text_rect.topleft = (x, y)
+        if backgroundColor:
+            pygame.draw.rect(self.window, backgroundColor, extended_text_rect,0,7,7,7,7,7)
+        text_surface_rect = text_surface.get_rect(center=extended_text_rect.center)
+        self.window.blit(text_surface,text_surface_rect)
+        pygame.display.flip()
+
+
 
     def wait_for_space_bar(self):
         waiting = True
@@ -166,7 +189,9 @@ class Game():
                     sys.exit()
                 if (event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and
                     event.ui_object_id == object_id) and event.text.lower() in restrictedList:
-                    return event.text
+                    text = event.text
+                    text_input.kill()
+                    return text
 
                 self.manager.process_events(event)
             
@@ -175,5 +200,3 @@ class Game():
             self.manager.draw_ui(self.window)
 
             pygame.display.update()
-        
-
